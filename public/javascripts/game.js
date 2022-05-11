@@ -27,7 +27,7 @@ function createBoard() {
                 if(cell.mine) {
                     $(cell).text("B");
                     console.log("Game Over");
-                    // Game Over
+                    cells.forEach(c => c.off("mousedown"));
                 } else {
                     if(cell.mines > 0) {
                         showMinesCount(cell);
