@@ -17,7 +17,11 @@ function createBoard() {
             let cell = $(`<div class='cell' id="r${y}c${x}"></div>`);
             cell.mousedown((e) => {
                 if(e.which == 3) {
-                    $(cell).text("X");
+                    if($(cell).text() == "X") {
+                        $(cell).text("");
+                    } else {
+                        $(cell).text("X");
+                    }
                     e.preventDefault();
                     return;
                 }
