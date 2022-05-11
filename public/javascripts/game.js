@@ -127,22 +127,16 @@ function countSurroundingMines(cell) {
 }
 
 function setMines(minesCount) {
-    cells[6 + 1 * w].mine = true;
-    cells[7 + 1 * w].mine = true;
-    cells[1 + 4 * w].mine = true;
-    cells[8 + 4 * w].mine = true;
-    cells[3 + 5 * w].mine = true;
-    cells[6 + 6 * w].mine = true;
-    cells[7 + 6 * w].mine = true;
-    cells[3 + 8 * w].mine = true;
-    cells[4 + 8 * w].mine = true;
-    cells[6 + 8 * w].mine = true;
-
-    for(let i = 0; i < cells.length; i++) {
-        cells[i].mines = countSurroundingMines(cells[i]);
-    }
-
-    return;
+    // cells[6 + 1 * w].mine = true;
+    // cells[7 + 1 * w].mine = true;
+    // cells[1 + 4 * w].mine = true;
+    // cells[8 + 4 * w].mine = true;
+    // cells[3 + 5 * w].mine = true;
+    // cells[6 + 6 * w].mine = true;
+    // cells[7 + 6 * w].mine = true;
+    // cells[3 + 8 * w].mine = true;
+    // cells[4 + 8 * w].mine = true;
+    // cells[6 + 8 * w].mine = true;
 
     while(minesCount > 0) {
         let cell = cells[Math.floor(Math.random() * cells.length)];
@@ -151,5 +145,9 @@ function setMines(minesCount) {
             minesCount--;
             //$(cell).text("B");
         }
+    }
+
+    for(let i = 0; i < cells.length; i++) {
+        cells[i].mines = countSurroundingMines(cells[i]);
     }
 }
