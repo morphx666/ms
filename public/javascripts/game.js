@@ -53,9 +53,15 @@ function createBoard() {
 
                 if(cell.mine) {
                     stopTimer();
-                    $(cell).text("B");
+                    $(cell).css("background-color", "red");
                     console.log("Game Over");
-                    cells.forEach(c => c.off("mousedown"));
+                    cells.forEach(c => {
+                        c.off("mousedown")
+                        if(c.mine) {
+                            c.addClass("reveal");
+                            c.text("B");                            
+                        }
+                    });
                 } else {
                     if(cell.mines > 0) {
                         showMinesCount(cell);
