@@ -1,20 +1,28 @@
 const w = 9;
 const h = 9;
 const totalMines = 10;
-let userMines = 0;
-const cells = [];
 const classes = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight'];
+const cells = [];
+const queue = [];
 let timer = null;
 let seconds = 1;
+let userMines = 0;
 
-$(document).ready(() => {
+$(document).ready(() => restart());
+
+function restart() {
+    cells.splice(0, cells.length);
+    queue.splice(0, queue.length);
+    stopTimer();
     createBoard();
     clearProcessedState();
     updateMinesCounter();
-});
+}
 
 function createBoard() {
     let board = $("#board");
+    board.empty();
+
     for(let y = 0; y < h; y++) {
         let row = $(`<div class='row'></div>`);
         for(let x = 0; x < w; x++) {
@@ -70,10 +78,16 @@ function startTimer() {
 }
 
 function stopTimer() {
-    window.clearInterval(timer);
+    if(timer != null) {
+        window.clearInterval(timer);
+        userMines = 0;
+        seconds = 0;
+        updateTimer();
+        updateMinesCounter();
+        timer = null;
+    }
 }
 
-const queue = [];
 function revealEmpty(cell) {
     reveal(cell);
 
