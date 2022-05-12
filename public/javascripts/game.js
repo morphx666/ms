@@ -89,6 +89,7 @@ function createBoard() {
                     if(t == cells.length) {
                         console.log("You Win!");
                         gameState = 2;
+                        userMines = 0;
                         stopTimer();
                         cells.forEach(c => {
                             if(c.mine) {
