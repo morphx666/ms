@@ -37,11 +37,13 @@ function createBoard() {
                 }
 
                 if(e.which == 3) {
-                    if($(cell).text() == "X") {
+                    if($(cell).text() == "🚩") {
                         $(cell).text("");
+                        $(cell).css("font-size", "30px");
                         userMines--;
                     } else {
-                        $(cell).text("X");
+                        $(cell).text("🚩");
+                        $(cell).css("font-size", "18px");
                         userMines++;
                     }
                     updateMinesCounter();
@@ -59,7 +61,8 @@ function createBoard() {
                         c.off("mousedown")
                         if(c.mine) {
                             c.addClass("reveal");
-                            c.text("B");                            
+                            c.text("💣");
+                            c.css("font-size", "18px");
                         }
                     });
                 } else {
