@@ -204,6 +204,8 @@ function updateTimer() {
 }
 
 function setGameLevel(level) {
+    $(".user").css("display", "none");
+
     switch(level.value) {
         case "0":
             w = 9;
@@ -221,7 +223,7 @@ function setGameLevel(level) {
             totalMines = 99;
             break;
         case "3":
-            $(".user").css("pointer-events", "unset");
+            $(".user").css("display", "unset");
     }
     $("#userWidth").val(w);
     $("#userHeight").val(h);
@@ -233,5 +235,11 @@ function setUserSettings() {
     w = $("#userWidth").val();
     h = $("#userHeight").val();
     totalMines = $("#userMines").val();
+
+    if(totalMines >= w * h) {
+        alert("Too many mines!");
+        return;
+    }
+
     restart();
 }
