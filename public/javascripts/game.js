@@ -73,6 +73,8 @@ function createBoard() {
                                 c.addClass("reveal");
                                 c.css("font-size", "18px");
                             }
+                        } else if(c.text() == "🚩") {
+                            c.text("❌");
                         }
                     });
                 } else {
