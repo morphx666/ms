@@ -68,9 +68,11 @@ function createBoard() {
                     cells.forEach(c => {
                         c.off("mousedown");
                         if(c.mine) {
-                            c.addClass("reveal");
-                            c.text("💣");
-                            c.css("font-size", "18px");
+                            if(c.text() != "🚩") {
+                                c.text("💣");
+                                c.addClass("reveal");
+                                c.css("font-size", "18px");
+                            }
                         }
                     });
                 } else {
