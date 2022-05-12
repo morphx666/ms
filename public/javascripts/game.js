@@ -9,7 +9,6 @@ let seconds = 1;
 
 $(document).ready(() => {
     createBoard();
-    setMines(totalMines);
     clearProcessedState();
     updateMinesCounter();
 });
@@ -21,7 +20,10 @@ function createBoard() {
         for(let x = 0; x < w; x++) {
             let cell = $(`<div class='cell' id="r${y}c${x}"></div>`);
             cell.mousedown((e) => {
-                if(timer == null) startTimer();
+                if(timer == null) {
+                    setMines(cell, totalMines);
+                    startTimer();
+                }
 
                 if(e.which == 3) {
                     if($(cell).text() == "X") {
@@ -150,7 +152,7 @@ function countSurroundingMines(cell) {
     return mines;
 }
 
-function setMines(minesCount) {
+function setMines(ex, minesCount) {
     // cells[6 + 1 * w].mine = true;
     // cells[7 + 1 * w].mine = true;
     // cells[1 + 4 * w].mine = true;
@@ -164,7 +166,7 @@ function setMines(minesCount) {
 
     while(minesCount > 0) {
         let cell = cells[Math.floor(Math.random() * cells.length)];
-        if(!cell.mine) {
+        if(!cell.mine && ex.x != cell.x && ex.y != cell.y) {
             cell.mine = true;
             minesCount--;
             //$(cell).text("B");
