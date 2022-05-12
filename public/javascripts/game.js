@@ -1,12 +1,17 @@
 const w = 9;
 const h = 9;
+const totalMines = 10;
+let userMines = 0;
 const cells = [];
 const classes = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight'];
+let timer = null;
+let seconds = 1;
 
 $(document).ready(() => {
     createBoard();
-    setMines(10);
+    setMines(totalMines);
     clearProcessedState();
+    updateMinesCounter();
 });
 
 function createBoard() {
@@ -16,12 +21,17 @@ function createBoard() {
         for(let x = 0; x < w; x++) {
             let cell = $(`<div class='cell' id="r${y}c${x}"></div>`);
             cell.mousedown((e) => {
+                if(timer == null) startTimer();
+
                 if(e.which == 3) {
                     if($(cell).text() == "X") {
                         $(cell).text("");
+                        userMines--;
                     } else {
                         $(cell).text("X");
+                        userMines++;
                     }
+                    updateMinesCounter();
                     e.preventDefault();
                     return;
                 }
@@ -29,6 +39,7 @@ function createBoard() {
                 reveal(cell);
 
                 if(cell.mine) {
+                    stopTimer();
                     $(cell).text("B");
                     console.log("Game Over");
                     cells.forEach(c => c.off("mousedown"));
@@ -49,6 +60,15 @@ function createBoard() {
         }
         board.append(row);
     }
+}
+
+function startTimer() {
+    updateTimer();
+    timer = window.setInterval(() => updateTimer(), 1000);
+}
+
+function stopTimer() {
+    window.clearInterval(timer);
 }
 
 const queue = [];
@@ -154,4 +174,12 @@ function setMines(minesCount) {
     for(let i = 0; i < cells.length; i++) {
         cells[i].mines = countSurroundingMines(cells[i]);
     }
+}
+
+function updateMinesCounter() {
+    $("#mines").text((totalMines - userMines).toString().padStart(3, "0"));
+}
+
+function updateTimer() {
+    $("#timer").text((seconds++).toString().padStart(3, "0"));
 }
