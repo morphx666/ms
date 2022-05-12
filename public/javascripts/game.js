@@ -257,7 +257,8 @@ function updateMinesCounter() {
 }
 
 function updateTimer() {
-    $("#timer").text((seconds++).toString().padStart(3, "0"));
+    const s = Math.min(999, seconds++);
+    $("#timer").text(s.toString().padStart(3, "0"));
 }
 
 function setGameLevel(level) {
