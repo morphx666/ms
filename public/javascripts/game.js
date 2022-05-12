@@ -89,7 +89,6 @@ function createBoard() {
                     if(t == cells.length) {
                         console.log("You Win!");
                         gameState = 2;
-                        userMines = 0;
                         stopTimer();
                         cells.forEach(c => {
                             if(c.mine) {
@@ -246,7 +245,15 @@ function setMines(ex, minesCount) {
 }
 
 function updateMinesCounter() {
-    $("#mines").text((totalMines - userMines).toString().padStart(3, "0"));
+    let t = totalMines - userMines;
+    if(t >= 0) {
+        t = Math.min(999, t);
+        t = t.toString().padStart(3, "0")
+    } else {
+        t = Math.min(99, Math.abs(t));
+        t = '-' + t.toString().padStart(2, "0")
+    }
+    $("#mines").text(t);
 }
 
 function updateTimer() {
