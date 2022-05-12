@@ -14,6 +14,7 @@ $(document).ready(() => {
 });
 
 function restart() {
+    $("#restart").text("🙂");
     cells.splice(0, cells.length);
     queue.splice(0, queue.length);
     seconds = 0;
@@ -58,6 +59,7 @@ function createBoard() {
                 if(cell.mine) {
                     stopTimer();
                     $(cell).css("background-color", "red");
+                    $("#restart").text("😟");
                     console.log("Game Over");
                     cells.forEach(c => {
                         c.off("mousedown")

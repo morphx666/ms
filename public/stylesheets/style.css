@@ -118,7 +118,7 @@ body {
     background-color: #ccc;
     padding: 8px;
     border-radius: 8px;
-    border: 1px solid #c0c0c0;
+    border: 1px solid #eee;
     width: fit-content;
     margin: 0 auto 8px;
 }
@@ -128,7 +128,7 @@ body {
 }
 
 input, select {
-    border: 1px solid #c0c0c0;
+    border: 1px solid #eee;
     border-radius: 3px;
     background-color: #dedede;
 }
