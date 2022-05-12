@@ -87,6 +87,10 @@ function createBoard() {
                         gameState = 2;
                         stopTimer();
                         cells.forEach(c => {
+                            if(c.mine) {
+                                c.text("🚩");
+                                c.css("font-size", "18px");
+                            }
                             c.off("mousedown");
                         });
                     }
