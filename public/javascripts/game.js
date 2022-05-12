@@ -21,6 +21,7 @@ function restart() {
     queue.splice(0, queue.length);
     stopTimer();
     seconds = 0;
+    userMines = 0;
     createBoard();
     clearProcessedState();
     updateMinesCounter();
@@ -124,7 +125,6 @@ function startTimer() {
 function stopTimer() {
     if(timer != null) {
         window.clearInterval(timer);
-        userMines = 0;
         updateTimer();
         updateMinesCounter();
         timer = null;
