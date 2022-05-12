@@ -63,10 +63,9 @@ function createBoard() {
                     gameState = 1;
                     stopTimer();
                     $(cell).css("background-color", "red");
-                    $("#restart").text("😟");
                     console.log("Game Over");
                     cells.forEach(c => {
-                        c.off("mousedown")
+                        c.off("mousedown");
                         if(c.mine) {
                             c.addClass("reveal");
                             c.text("💣");
@@ -81,11 +80,31 @@ function createBoard() {
                         revealEmpty(cell);
                         clearProcessedState();
                     }
+                    const t = cells.filter(c => c.revealed).length + cells.filter(c => c.mine).length;
+                    console.log(t, cells.length);
+                    if(t == cells.length) {
+                        console.log("You Win!");
+                        gameState = 2;
+                        stopTimer();
+                        cells.forEach(c => {
+                            c.off("mousedown");
+                        });
+                    }
                 }
             });
 
             cell.mouseup(() => {
-                if(gameState == 0) $("#restart").text("🙂");
+                switch(gameState) {
+                    case 0:
+                        $("#restart").text("🙂");
+                        break;
+                    case 1:
+                        $("#restart").text("😟");
+                        break;
+                    case 2:
+                        $("#restart").text("😎");
+                        break;
+                }
             });
 
             cell.x = x;
@@ -174,6 +193,7 @@ function showMinesCount(cell) {
 function reveal(cell) {
     cell.addClass("reveal");
     cell.off("mousedown");
+    cell.revealed = true;
 }
 
 function countSurroundingMines(cell) {
