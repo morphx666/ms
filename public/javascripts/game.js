@@ -19,8 +19,8 @@ function restart() {
     $("#restart").text("🙂");
     cells.splice(0, cells.length);
     queue.splice(0, queue.length);
-    seconds = 0;
     stopTimer();
+    seconds = 0;
     createBoard();
     clearProcessedState();
     updateMinesCounter();
@@ -81,7 +81,6 @@ function createBoard() {
                         clearProcessedState();
                     }
                     const t = cells.filter(c => c.revealed).length + cells.filter(c => c.mine).length;
-                    console.log(t, cells.length);
                     if(t == cells.length) {
                         console.log("You Win!");
                         gameState = 2;
