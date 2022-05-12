@@ -112,13 +112,14 @@ body {
 .eigth { color: gray; }
 
 .settings {
-    position: absolute;
     display: flex;
     flex-direction: column;
     background-color: #eee;
     padding: 8px;
     border-radius: 8px;
     border: 1px solid #c0c0c0;
+    width: fit-content;
+    margin: 0 auto 8px;
 }
 
 .settings div label {
