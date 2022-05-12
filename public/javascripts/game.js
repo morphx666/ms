@@ -16,10 +16,12 @@ $(document).ready(() => {
 function restart() {
     cells.splice(0, cells.length);
     queue.splice(0, queue.length);
+    seconds = 0;
     stopTimer();
     createBoard();
     clearProcessedState();
     updateMinesCounter();
+    updateTimer();
 }
 
 function createBoard() {
@@ -93,7 +95,6 @@ function stopTimer() {
     if(timer != null) {
         window.clearInterval(timer);
         userMines = 0;
-        seconds = 0;
         updateTimer();
         updateMinesCounter();
         timer = null;
