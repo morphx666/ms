@@ -7,6 +7,7 @@ const queue = [];
 let timer = null;
 let seconds = 1;
 let userMines = 0;
+let gameState = 0;
 
 $(document).ready(() => {
     $("#level").val("0");
@@ -14,6 +15,7 @@ $(document).ready(() => {
 });
 
 function restart() {
+    gameState = 0;
     $("#restart").text("🙂");
     cells.splice(0, cells.length);
     queue.splice(0, queue.length);
@@ -33,6 +35,7 @@ function createBoard() {
         let row = $(`<div class='row'></div>`);
         for(let x = 0; x < w; x++) {
             let cell = $(`<div class='cell' id="r${y}c${x}"></div>`);
+            
             cell.mousedown((e) => {
                 if(timer == null) {
                     setMines(cell, totalMines);
@@ -57,6 +60,7 @@ function createBoard() {
                 reveal(cell);
 
                 if(cell.mine) {
+                    gameState = 1;
                     stopTimer();
                     $(cell).css("background-color", "red");
                     $("#restart").text("😟");
@@ -70,6 +74,7 @@ function createBoard() {
                         }
                     });
                 } else {
+                    $("#restart").text("😮");
                     if(cell.mines > 0) {
                         showMinesCount(cell);
                     } else {
@@ -78,6 +83,11 @@ function createBoard() {
                     }
                 }
             });
+
+            cell.mouseup(() => {
+                if(gameState == 0) $("#restart").text("🙂");
+            });
+
             cell.x = x;
             cell.y = y;
             cell.mine = false;
