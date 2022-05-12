@@ -1,6 +1,6 @@
-const w = 9;
-const h = 9;
-const totalMines = 10;
+let w = 9;
+let h = 9;
+let totalMines = 10;
 const classes = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight'];
 const cells = [];
 const queue = [];
@@ -8,7 +8,10 @@ let timer = null;
 let seconds = 1;
 let userMines = 0;
 
-$(document).ready(() => restart());
+$(document).ready(() => {
+    $("#level").val("0");
+    restart()
+});
 
 function restart() {
     cells.splice(0, cells.length);
@@ -198,4 +201,37 @@ function updateMinesCounter() {
 
 function updateTimer() {
     $("#timer").text((seconds++).toString().padStart(3, "0"));
+}
+
+function setGameLevel(level) {
+    switch(level.value) {
+        case "0":
+            w = 9;
+            h = 9;
+            totalMines = 10;
+            break;
+        case "1":
+            w = 16;
+            h = 16;
+            totalMines = 40;
+            break;
+        case "2":
+            w = 30;
+            h = 16;
+            totalMines = 99;
+            break;
+        case "3":
+            $(".user").css("pointer-events", "unset");
+    }
+    $("#userWidth").val(w);
+    $("#userHeight").val(h);
+    $("#userMines").val(totalMines);
+    restart();
+}
+
+function setUserSettings() {
+    w = $("#userWidth").val();
+    h = $("#userHeight").val();
+    totalMines = $("#userMines").val();
+    restart();
 }

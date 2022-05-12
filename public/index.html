@@ -8,6 +8,39 @@
 </head>
 
 <body oncontextmenu="return false;">
+    <div class="settings">
+        <div>
+            <label for="level">Game Level:</label>
+            <select name="level" id="level" onChange="setGameLevel(this)">
+                <option value="0">Beginner</option>
+                <option value="1">Intermediate</option>
+                <option value="2">Expert</option>
+                <option value="3">Custom...</option>
+            </select>
+        </div>
+
+        <div class="user">
+            <div>
+                <label for="width">Width:</label>
+                <input type="number" name="userWidth" id="userWidth" value="9" min="9" max="100">
+            </div>
+
+            <div>
+                <label for="height">Height:</label>
+                <input type="number" name="userHeight" id="userHeight" value="9" min="9" max="100">
+            </div>
+
+            <div>
+                <label for="mines">Mines:</label>
+                <input type="number" name="userMines" id="userMines" value="10" min="10" max="1000">
+            </div>
+
+            <div>
+                <input type="button" name="userSet" id="userSet" value="Set" onclick="setUserSettings()">
+            </div>
+        </div>
+    </div>
+
     <div class="panel">
         <div class="banner threed">
             <div id="mines" class="mines digital">000</div>

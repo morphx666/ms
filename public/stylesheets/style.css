@@ -4,7 +4,6 @@
 }
 
 body {
-    padding: 50px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     user-select: none;
 }
@@ -111,3 +110,50 @@ body {
 .six { color: darkcyan; }
 .seven { color: black; }
 .eigth { color: gray; }
+
+.settings {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    background-color: #eee;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #c0c0c0;
+}
+
+.settings div label {
+    margin-right: 1em;
+}
+
+input, select {
+    border: 1px solid #c0c0c0;
+    border-radius: 3px;
+    background-color: white;
+}
+
+input[type=number] {
+    width: 5em;
+    text-align: center;
+}
+
+input[type=button] {
+    padding: 0 2em;
+    width: 100%;
+    cursor: pointer;
+}
+
+.user {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1em;
+
+    pointer-events: none;
+}
+
+.user div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.2em 0;
+}
