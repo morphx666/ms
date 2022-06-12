@@ -234,25 +234,25 @@ function countSurroundingMines(cell) {
 
 function setMines(ex, minesCount) {
     // cells[c + r * w].mine;
-    cells[2 + 1 * w].mine = true;
-    cells[4 + 4 * w].mine = true;
-    cells[5 + 4 * w].mine = true;
-    cells[8 + 4 * w].mine = true;
-    cells[1 + 5 * w].mine = true;
-    cells[1 + 6 * w].mine = true;
-    cells[8 + 6 * w].mine = true;
-    cells[1 + 8 * w].mine = true;
-    cells[7 + 8 * w].mine = true;
-    cells[8 + 8 * w].mine = true;
+    // cells[2 + 1 * w].mine = true;
+    // cells[4 + 4 * w].mine = true;
+    // cells[5 + 4 * w].mine = true;
+    // cells[8 + 4 * w].mine = true;
+    // cells[1 + 5 * w].mine = true;
+    // cells[1 + 6 * w].mine = true;
+    // cells[8 + 6 * w].mine = true;
+    // cells[1 + 8 * w].mine = true;
+    // cells[7 + 8 * w].mine = true;
+    // cells[8 + 8 * w].mine = true;
 
-    // while(minesCount > 0) {
-    //     let cell = cells[Math.floor(Math.random() * cells.length)];
-    //     if(!cell.mine && ex.x != cell.x && ex.y != cell.y) {
-    //         cell.mine = true;
-    //         minesCount--;
-    //         //$(cell).text("B");
-    //     }
-    // }
+    while(minesCount > 0) {
+        let cell = cells[Math.floor(Math.random() * cells.length)];
+        if(!cell.mine && ex.x != cell.x && ex.y != cell.y) {
+            cell.mine = true;
+            minesCount--;
+            //$(cell).text("B");
+        }
+    }
 
     for(let i = 0; i < cells.length; i++) {
         cells[i].mines = countSurroundingMines(cells[i]);
