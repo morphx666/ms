@@ -26,6 +26,10 @@ function restart() {
     clearProcessedState();
     updateMinesCounter();
     updateTimer();
+    $(".game-over").css({
+        "opacity": "0",
+        "z-index": "-1"
+    });
 }
 
 function createBoard() {
@@ -63,8 +67,8 @@ function createBoard() {
                 if(cell.mine) {
                     gameState = 1;
                     stopTimer();
+                    gameOver("You Lose!");
                     $(cell).css("background-color", "red");
-                    console.log("Game Over");
                     cells.forEach(c => {
                         c.off("mousedown");
                         if(c.mine) {
@@ -90,7 +94,7 @@ function createBoard() {
                         userMines = totalMines;
                         gameState = 2;
                         stopTimer();
-                        console.log("You Win!");
+                        gameOver("You Win!");
                         cells.forEach(c => {
                             if(c.mine) {
                                 c.text("🚩");
@@ -124,6 +128,15 @@ function createBoard() {
         }
         board.append(row);
     }
+}
+
+function gameOver(text) {
+    $(".game-over").text(text);
+    $(".game-over").css({
+        "opacity": "1",
+        "z-index": "1"
+    });
+    window.setTimeout(() => $(".game-over").css("opacity", "0"), 3000);
 }
 
 function startTimer() {
