@@ -37,7 +37,7 @@ function createBoard() {
         for(let x = 0; x < w; x++) {
             let cell = $(`<div class='cell' id="r${y}c${x}"></div>`);
             
-            cell.mousedown((e) => {
+            cell.mousedown(e => {
                 if(timer == null) {
                     setMines(cell, totalMines);
                     startTimer();
@@ -87,9 +87,10 @@ function createBoard() {
                     }
                     const t = cells.filter(c => c.revealed).length + cells.filter(c => c.mine).length;
                     if(t == cells.length) {
-                        console.log("You Win!");
+                        userMines = totalMines;
                         gameState = 2;
                         stopTimer();
+                        console.log("You Win!");
                         cells.forEach(c => {
                             if(c.mine) {
                                 c.text("🚩");
@@ -219,25 +220,26 @@ function countSurroundingMines(cell) {
 }
 
 function setMines(ex, minesCount) {
-    // cells[6 + 1 * w].mine = true;
-    // cells[7 + 1 * w].mine = true;
-    // cells[1 + 4 * w].mine = true;
-    // cells[8 + 4 * w].mine = true;
-    // cells[3 + 5 * w].mine = true;
-    // cells[6 + 6 * w].mine = true;
-    // cells[7 + 6 * w].mine = true;
-    // cells[3 + 8 * w].mine = true;
-    // cells[4 + 8 * w].mine = true;
-    // cells[6 + 8 * w].mine = true;
+    // cells[c + r * w].mine;
+    cells[2 + 1 * w].mine = true;
+    cells[4 + 4 * w].mine = true;
+    cells[5 + 4 * w].mine = true;
+    cells[8 + 4 * w].mine = true;
+    cells[1 + 5 * w].mine = true;
+    cells[1 + 6 * w].mine = true;
+    cells[8 + 6 * w].mine = true;
+    cells[1 + 8 * w].mine = true;
+    cells[7 + 8 * w].mine = true;
+    cells[8 + 8 * w].mine = true;
 
-    while(minesCount > 0) {
-        let cell = cells[Math.floor(Math.random() * cells.length)];
-        if(!cell.mine && ex.x != cell.x && ex.y != cell.y) {
-            cell.mine = true;
-            minesCount--;
-            //$(cell).text("B");
-        }
-    }
+    // while(minesCount > 0) {
+    //     let cell = cells[Math.floor(Math.random() * cells.length)];
+    //     if(!cell.mine && ex.x != cell.x && ex.y != cell.y) {
+    //         cell.mine = true;
+    //         minesCount--;
+    //         //$(cell).text("B");
+    //     }
+    // }
 
     for(let i = 0; i < cells.length; i++) {
         cells[i].mines = countSurroundingMines(cells[i]);
@@ -282,10 +284,11 @@ function setGameLevel(level) {
             break;
         case "3":
             $(".user").css("display", "unset");
+            $("#userWidth").val(w);
+            $("#userHeight").val(h);
+            $("#userMines").val(totalMines);
+            break;
     }
-    $("#userWidth").val(w);
-    $("#userHeight").val(h);
-    $("#userMines").val(totalMines);
     restart();
 }
 
