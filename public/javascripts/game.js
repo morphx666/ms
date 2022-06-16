@@ -171,41 +171,30 @@ function revealEmpty(cell) {
     if(dn && lt) canMove(cell, 'dnlt');
     if(lt && up) canMove(cell, 'ltup');
 
-    queue.forEach(data => {
-        const cell = data[0];
-        const canMove = data[1];
-        if(canMove) {
-            if(!cell.processed) {
-                cell.processed = true;
-                revealEmpty(cell);
+    queue.forEach(c => {
+        if(c.mines == 0) {
+            if(!c.processed) {
+                c.processed = true;
+                revealEmpty(c);
             }
         } else {
-            reveal(cell);
-            showMinesCount(cell);
+            reveal(c);
+            showMinesCount(c);
         }
     });
 
     queue.splice(0, queue.length);
 }
 
-function getCell(cell, d) {
+function canMove(cell, d) {
     let x = d.includes("rt") ? 1 : d.includes("lt") ? -1 : 0;
     let y = d.includes("up") ? -1 : d.includes("dn") ? 1 : 0;
 
-    if(cell.x + x < 0 || cell.x + x >= w || cell.y + y < 0 || cell.y + y >= h) {
-        return null;
-    } else {
-        return cells[cell.x + x + (cell.y + y) * w];
-    }
-}
-
-function canMove(cell, d) {
-    const n = getCell(cell, d);
-    if(n == null) {
-        return false;
-    } else {
-        queue.push([n, n.mines == 0]);
+    if(cell.x + x >= 0 && cell.x + x < w && cell.y + y >= 0 && cell.y + y < h) {
+        queue.push(cells[cell.x + x + (cell.y + y) * w]);
         return true;
+    } else {
+        return false;
     }
 }
 
