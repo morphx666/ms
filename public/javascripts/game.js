@@ -178,6 +178,8 @@ function revealEmpty(cell) {
             revealEmpty(cell);
         }
     });
+
+    queue.splice(0, queue.length);
 }
 
 function getCell(cell, d) {
