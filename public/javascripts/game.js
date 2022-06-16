@@ -47,18 +47,25 @@ function createBoard() {
                     startTimer();
                 }
 
+                const ocell = $(cell);
+
                 if(e.which == 3) {
-                    if($(cell).text() == "🚩") {
-                        $(cell).text("");
-                        $(cell).css("font-size", "30px");
+                    if(ocell.text() == "🚩") {
+                        ocell.text("");
+                        ocell.css("font-size", "30px");
                         userMines--;
                     } else {
-                        $(cell).text("🚩");
-                        $(cell).css("font-size", "18px");
+                        ocell.text("🚩");
+                        ocell.css("font-size", "18px");
                         userMines++;
                     }
                     updateMinesCounter();
                     e.preventDefault();
+                    return;
+                }
+
+                if(e.which == 1 && ocell.text() == "🚩") {
+                    $("#restart").text("😮");
                     return;
                 }
 
@@ -68,7 +75,7 @@ function createBoard() {
                     gameState = 1;
                     stopTimer();
                     gameOver("<h1>💥</h1>You Lose!");
-                    $(cell).css("background-color", "red");
+                    ocell.css("background-color", "red");
                     cells.forEach(c => {
                         c.off("mousedown");
                         if(c.mine) {
