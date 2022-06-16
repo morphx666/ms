@@ -67,7 +67,7 @@ function createBoard() {
                 if(cell.mine) {
                     gameState = 1;
                     stopTimer();
-                    gameOver("You Lose!");
+                    gameOver("<h1>💥</h1>You Lose!");
                     $(cell).css("background-color", "red");
                     cells.forEach(c => {
                         c.off("mousedown");
@@ -94,7 +94,7 @@ function createBoard() {
                         userMines = totalMines;
                         gameState = 2;
                         stopTimer();
-                        gameOver("You Win!");
+                        gameOver("<h1>🏆</h1>You Win!");
                         cells.forEach(c => {
                             if(c.mine) {
                                 c.text("🚩");
@@ -131,7 +131,7 @@ function createBoard() {
 }
 
 function gameOver(text) {
-    $(".game-over").text(text);
+    $(".game-over").html(text);
     $(".game-over").css({
         "opacity": "1",
         "z-index": "1"

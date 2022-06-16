@@ -166,15 +166,18 @@ input[type=button] {
     left: 50%;
     margin: 0 auto;    
     transform: translate(-50%, calc(-50% + 13px));
+    box-shadow: 0 0 8px #999;
 
     color: #000;
-    background-color: #eee;
-    border: 1px solid #000;
+    /* background-color: #eee; */
+    background: linear-gradient(to bottom, #eee, #ccc);
+    border: 2px solid #999;
     border-radius: 10px;
     padding: 1em 2.5em;
     width: fit-content;
 
     font-weight: 600;
+    text-align: center;
 
     opacity: 0;
     transition: opacity 1s;
