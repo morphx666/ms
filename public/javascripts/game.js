@@ -162,26 +162,26 @@ function stopTimer() {
 function revealEmpty(cell) {
     reveal(cell);
 
-    queue.push(canMove(cell, 'up'));
-    queue.push(canMove(cell, 'uprt'));
-    queue.push(canMove(cell, 'rt'));
-    queue.push(canMove(cell, 'rtdn'));
-    queue.push(canMove(cell, 'dn'));
-    queue.push(canMove(cell, 'dnlt'));
-    queue.push(canMove(cell, 'lt'));
-    queue.push(canMove(cell, 'ltup'));
+    const up = canMove(cell, 'up');
+    const rt = canMove(cell, 'rt');
+    const dn = canMove(cell, 'dn');
+    const lt = canMove(cell, 'lt');
+    if(up && rt) canMove(cell, 'uprt');
+    if(rt && dn) canMove(cell, 'rtdn');
+    if(dn && lt) canMove(cell, 'dnlt');
+    if(lt && up) canMove(cell, 'ltup');
 
     queue.forEach(data => {
         const cell = data[0];
         const canMove = data[1];
-        if(!canMove) {
-            if(cell != null) {
-                reveal(cell);
-                showMinesCount(cell);
+        if(canMove) {
+            if(!cell.processed) {
+                cell.processed = true;
+                revealEmpty(cell);
             }
-        } else if(!cell.processed) {
-            cell.processed = true;
-            revealEmpty(cell);
+        } else {
+            reveal(cell);
+            showMinesCount(cell);
         }
     });
 
@@ -202,9 +202,10 @@ function getCell(cell, d) {
 function canMove(cell, d) {
     const n = getCell(cell, d);
     if(n == null) {
-        return [null, false];
+        return false;
     } else {
-        return [n, n.mines == 0];
+        queue.push([n, n.mines == 0]);
+        return true;
     }
 }
 
