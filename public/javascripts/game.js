@@ -162,14 +162,14 @@ function stopTimer() {
 function revealEmpty(cell) {
     reveal(cell);
 
-    const up = canMove(cell, 'up');
-    const rt = canMove(cell, 'rt');
-    const dn = canMove(cell, 'dn');
-    const lt = canMove(cell, 'lt');
-    if(up && rt) canMove(cell, 'uprt');
-    if(rt && dn) canMove(cell, 'rtdn');
-    if(dn && lt) canMove(cell, 'dnlt');
-    if(lt && up) canMove(cell, 'ltup');
+    const up = canMove(cell, 0, -1);
+    const rt = canMove(cell, 1, 0);
+    const dn = canMove(cell, 0, 1);
+    const lt = canMove(cell, -1, 0);
+    if(up && rt) canMove(cell, 1, -1);
+    if(rt && dn) canMove(cell, 1, 1);
+    if(dn && lt) canMove(cell, -1, 1);
+    if(lt && up) canMove(cell, -1, -1);
 
     queue.forEach(c => {
         if(c.mines == 0) {
@@ -186,10 +186,7 @@ function revealEmpty(cell) {
     queue.splice(0, queue.length);
 }
 
-function canMove(cell, d) {
-    let x = d.includes("rt") ? 1 : d.includes("lt") ? -1 : 0;
-    let y = d.includes("up") ? -1 : d.includes("dn") ? 1 : 0;
-
+function canMove(cell, x, y) {
     if(cell.x + x >= 0 && cell.x + x < w && cell.y + y >= 0 && cell.y + y < h) {
         queue.push(cells[cell.x + x + (cell.y + y) * w]);
         return true;
