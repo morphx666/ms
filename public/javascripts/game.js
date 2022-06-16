@@ -94,7 +94,6 @@ function createBoard() {
                         showMinesCount(cell);
                     } else {
                         revealEmpty(cell);
-                        clearProcessedState();
                     }
                     const t = cells.filter(c => c.revealed).length + cells.filter(c => c.mine).length;
                     if(t == cells.length) {
