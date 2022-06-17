@@ -160,6 +160,8 @@ function stopTimer() {
 }
 
 function revealEmpty(cell) {
+    //if(cell.text() == "🚩") return;
+    if(cell.text() != "") return;
     reveal(cell);
 
     const up = canMove(cell, 0, -1);
