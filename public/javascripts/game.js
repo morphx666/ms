@@ -4,10 +4,15 @@ const queue = [];
 let timer = null;
 let seconds = 1;
 
+const buttons = {
+    left: 1,
+    right: 3
+}
+
 const states = {
     playing: 0, 
-    lose: 1,
-    win: 2
+    lost: 1,
+    won: 2
 }
 
 const game = {
@@ -32,7 +37,7 @@ function restart() {
     stopTimer();
     seconds = 0;
     createBoard();
-    clearProcessedState();
+    clearCellsStates();
     updateMinesCounter();
     updateTimer();
     $(".game-over").css({
@@ -51,14 +56,13 @@ function createBoard() {
             let cell = $(`<div class='cell threed3' id="r${y}c${x}"></div>`);
             
             cell.mousedown(e => {
-                if(e.which == 1 && timer == null) {
+                if(e.which == buttons.left && timer == null) {
                     setMines(cell, game.totalMines);
                     startTimer();
                 }
 
                 const ocell = $(cell);
-
-                if(e.which == 3) {
+                if(e.which == buttons.right) {
                     if(cell.flagged) {
                         ocell.text("");
                         ocell.css("font-size", "30px");
@@ -74,7 +78,7 @@ function createBoard() {
                     return;
                 }
 
-                if(e.which == 1 && cell.flagged) {
+                if(e.which == buttons.left && cell.flagged) {
                     $("#restart").text("😮");
                     return;
                 }
@@ -82,7 +86,7 @@ function createBoard() {
                 reveal(cell);
 
                 if(cell.mine) {
-                    game.state = states.lose;
+                    game.state = states.lost;
                     stopTimer();
                     gameOver("<h1>💥</h1>You Lose!");
                     ocell.css("background-color", "red");
@@ -108,7 +112,7 @@ function createBoard() {
                     const t = cells.filter(c => c.revealed).length + cells.filter(c => c.mine).length;
                     if(t == cells.length) {
                         game.userMines = game.totalMines;
-                        game.state = states.win;
+                        game.state = states.won;
                         stopTimer();
                         gameOver("<h1>🏆</h1>You Win!");
                         cells.forEach(c => {
@@ -127,10 +131,10 @@ function createBoard() {
                     case states.playing:
                         $("#restart").text("🙂");
                         break;
-                    case states.lose:
+                    case states.lost:
                         $("#restart").text("😟");
                         break;
-                    case states.win:
+                    case states.won:
                         $("#restart").text("😎");
                         break;
                 }
@@ -189,7 +193,7 @@ function revealEmpty(cell) {
                 c.processed = true;
                 revealEmpty(c);
             }
-        } else {
+        } else if(!c.flagged) {
             reveal(c);
             showMinesCount(c);
         }
@@ -207,8 +211,9 @@ function canMove(cell, x, y) {
     }
 }
 
-function clearProcessedState() {
+function clearCellsStates() {
     for(let i = 0; i < cells.length; i++) {
+        cells[i].flagged = false;
         cells[i].processed = false;
     }
 }
@@ -241,16 +246,16 @@ function countSurroundingMines(cell) {
 
 function setMines(ex, minesCount) {
     // cells[c + r * w].mine;
-    // cells[2 + 1 * w].mine = true;
-    // cells[4 + 4 * w].mine = true;
-    // cells[5 + 4 * w].mine = true;
-    // cells[8 + 4 * w].mine = true;
-    // cells[1 + 5 * w].mine = true;
-    // cells[1 + 6 * w].mine = true;
-    // cells[8 + 6 * w].mine = true;
-    // cells[1 + 8 * w].mine = true;
-    // cells[7 + 8 * w].mine = true;
-    // cells[8 + 8 * w].mine = true;
+    // cells[1 + 1 * game.w].mine = true;
+    // cells[2 + 1 * game.w].mine = true;
+    // cells[5 + 1 * game.w].mine = true;
+    // cells[8 + 2 * game.w].mine = true;
+    // cells[5 + 3 * game.w].mine = true;
+    // cells[7 + 3 * game.w].mine = true;
+    // cells[5 + 5 * game.w].mine = true;
+    // cells[6 + 5 * game.w].mine = true;
+    // cells[7 + 6 * game.w].mine = true;
+    // cells[2 + 7 * game.w].mine = true;
 
     while(minesCount > 0) {
         let cell = cells[Math.floor(Math.random() * cells.length)];
