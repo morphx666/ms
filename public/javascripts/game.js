@@ -51,7 +51,7 @@ function createBoard() {
             let cell = $(`<div class='cell threed3' id="r${y}c${x}"></div>`);
             
             cell.mousedown(e => {
-                if(timer == null) {
+                if(e.which == 1 && timer == null) {
                     setMines(cell, game.totalMines);
                     startTimer();
                 }
