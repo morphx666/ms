@@ -102,11 +102,11 @@ function createBoard() {
                         stopTimer();
                         gameOver("<h1>🏆</h1>You Win!");
                         cells.forEach(c => {
+                            c.off("mousedown");
                             if(c.mine) {
                                 c.text("🚩");
                                 c.css("font-size", "18px");
                             }
-                            c.off("mousedown");
                         });
                     }
                 }
