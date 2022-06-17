@@ -25,7 +25,7 @@ const game = {
 
 $(document).ready(() => {
     $("#level").val("0");
-    restart()
+    restart();
 });
 
 function restart() {
@@ -246,9 +246,9 @@ function countSurroundingMines(cell) {
 
 function setMines(ex, minesCount) {
     // cells[c + r * w].mine;
-    cells[4 + 2 * game.w].mine = true;
-    cells[8 + 4 * game.w].mine = true;
-    cells[5 + 6 * game.w].mine = true;
+    // cells[4 + 2 * game.w].mine = true;
+    // cells[8 + 4 * game.w].mine = true;
+    // cells[5 + 6 * game.w].mine = true;
     // cells[8 + 2 * game.w].mine = true;
     // cells[5 + 3 * game.w].mine = true;
     // cells[7 + 3 * game.w].mine = true;
@@ -257,13 +257,13 @@ function setMines(ex, minesCount) {
     // cells[7 + 6 * game.w].mine = true;
     // cells[2 + 7 * game.w].mine = true;
 
-    // while(minesCount > 0) {
-    //     let cell = cells[Math.floor(Math.random() * cells.length)];
-    //     if(!cell.mine && ex.x != cell.x && ex.y != cell.y) {
-    //         cell.mine = true;
-    //         minesCount--;
-    //     }
-    // }
+    while(minesCount > 0) {
+        let cell = cells[Math.floor(Math.random() * cells.length)];
+        if(!cell.mine && ex.x != cell.x && ex.y != cell.y) {
+            cell.mine = true;
+            minesCount--;
+        }
+    }
 
     for(let i = 0; i < cells.length; i++) {
         cells[i].mines = countSurroundingMines(cells[i]);
