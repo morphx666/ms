@@ -47,13 +47,13 @@ function restart() {
 }
 
 function createBoard() {
-    let board = $("#board");
+    const board = $("#board");
     board.empty();
 
     for(let y = 0; y < game.h; y++) {
         let row = $(`<div class='row'></div>`);
         for(let x = 0; x < game.w; x++) {
-            let cell = $(`<div class='cell threed3' id="r${y}c${x}"></div>`);
+            let cell = $(`<div class='cell threed3'"></div>`);
             
             cell.mousedown(e => {
                 if(e.which == buttons.left && timer == null) {
@@ -109,7 +109,7 @@ function createBoard() {
                     } else {
                         revealEmpty(cell);
                     }
-                    const t = cells.filter(c => c.revealed).length + game.totalMines;
+                    const t = cells.filter(c => c.revealed).length + cells.filter(c => c.mine).length;
                     if(t == cells.length) {
                         game.userMines = game.totalMines;
                         game.state = states.won;
@@ -246,9 +246,9 @@ function countSurroundingMines(cell) {
 
 function setMines(ex, minesCount) {
     // cells[c + r * w].mine;
-    // cells[1 + 1 * game.w].mine = true;
-    // cells[2 + 1 * game.w].mine = true;
-    // cells[5 + 1 * game.w].mine = true;
+    cells[4 + 2 * game.w].mine = true;
+    cells[8 + 4 * game.w].mine = true;
+    cells[5 + 6 * game.w].mine = true;
     // cells[8 + 2 * game.w].mine = true;
     // cells[5 + 3 * game.w].mine = true;
     // cells[7 + 3 * game.w].mine = true;
@@ -257,14 +257,13 @@ function setMines(ex, minesCount) {
     // cells[7 + 6 * game.w].mine = true;
     // cells[2 + 7 * game.w].mine = true;
 
-    while(minesCount > 0) {
-        let cell = cells[Math.floor(Math.random() * cells.length)];
-        if(!cell.mine && ex.x != cell.x && ex.y != cell.y) {
-            cell.mine = true;
-            minesCount--;
-            //$(cell).text("B");
-        }
-    }
+    // while(minesCount > 0) {
+    //     let cell = cells[Math.floor(Math.random() * cells.length)];
+    //     if(!cell.mine && ex.x != cell.x && ex.y != cell.y) {
+    //         cell.mine = true;
+    //         minesCount--;
+    //     }
+    // }
 
     for(let i = 0; i < cells.length; i++) {
         cells[i].mines = countSurroundingMines(cells[i]);
