@@ -74,7 +74,7 @@ function createBoard() {
                     return;
                 }
 
-                if(e.which == 1 && ocell.flagged) {
+                if(e.which == 1 && cell.flagged) {
                     $("#restart").text("😮");
                     return;
                 }
