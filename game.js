@@ -109,7 +109,7 @@ function createBoard() {
                     } else {
                         revealEmpty(cell);
                     }
-                    const t = cells.filter(c => c.revealed).length + cells.filter(c => c.mine).length;
+                    const t = cells.filter(c => c.revealed).length + game.totalMines;
                     if(t == cells.length) {
                         game.userMines = game.totalMines;
                         game.state = states.won;
