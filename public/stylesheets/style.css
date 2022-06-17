@@ -9,7 +9,14 @@ body {
     background-color: #222;
 }
 
-.threed {
+.threed3 {
+    border-top: 3px solid #ffffff;
+    border-left: 3px solid #ffffff;
+    border-right: 3px solid #7f7f7f;
+    border-bottom: 3px solid #7f7f7f;
+}
+
+.threed6 {
     border-top: 6px solid #7f7f7f;
     border-left: 6px solid #7f7f7f;
     border-right: 6px solid #ffffff;
@@ -47,12 +54,7 @@ body {
     padding: 0 1px;
 }
 
-.restart {
-    border-top: 3px solid #ffffff;
-    border-left: 3px solid #ffffff;
-    border-right: 3px solid #7f7f7f;
-    border-bottom: 3px solid #7f7f7f;
-    
+.restart {   
     padding: 2px;
     font-size: 20px;
 
@@ -85,11 +87,6 @@ body {
     height: 32px;
     background-color: #c0c0c0;
     margin: 1px;
-    
-    border-top: 3px solid #ffffff;
-    border-left: 3px solid #ffffff;
-    border-right: 3px solid #7f7f7f;
-    border-bottom: 3px solid #7f7f7f;
 
     cursor: pointer;
     text-align: center;

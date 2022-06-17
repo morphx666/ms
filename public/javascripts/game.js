@@ -1,13 +1,22 @@
-let w = 9;
-let h = 9;
-let totalMines = 10;
 const classes = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight'];
 const cells = [];
 const queue = [];
 let timer = null;
 let seconds = 1;
-let userMines = 0;
-let gameState = 0;
+
+const states = {
+    playing: 0, 
+    lose: 1,
+    win: 2
+}
+
+const game = {
+    w: 9,
+    h: 9,
+    totalMines: 10,
+    userMines: 0,
+    state: states.playing
+};
 
 $(document).ready(() => {
     $("#level").val("0");
@@ -15,13 +24,13 @@ $(document).ready(() => {
 });
 
 function restart() {
-    gameState = 0;
+    game.state = states.playing;
+    game.userMines = 0;
     $("#restart").text("🙂");
     cells.splice(0, cells.length);
     queue.splice(0, queue.length);
     stopTimer();
     seconds = 0;
-    userMines = 0;
     createBoard();
     clearProcessedState();
     updateMinesCounter();
@@ -36,35 +45,36 @@ function createBoard() {
     let board = $("#board");
     board.empty();
 
-    for(let y = 0; y < h; y++) {
+    for(let y = 0; y < game.h; y++) {
         let row = $(`<div class='row'></div>`);
-        for(let x = 0; x < w; x++) {
-            let cell = $(`<div class='cell' id="r${y}c${x}"></div>`);
+        for(let x = 0; x < game.w; x++) {
+            let cell = $(`<div class='cell threed3' id="r${y}c${x}"></div>`);
             
             cell.mousedown(e => {
                 if(timer == null) {
-                    setMines(cell, totalMines);
+                    setMines(cell, game.totalMines);
                     startTimer();
                 }
 
                 const ocell = $(cell);
 
                 if(e.which == 3) {
-                    if(ocell.text() == "🚩") {
+                    if(cell.flagged) {
                         ocell.text("");
                         ocell.css("font-size", "30px");
-                        userMines--;
+                        game.userMines--;
                     } else {
                         ocell.text("🚩");
                         ocell.css("font-size", "18px");
-                        userMines++;
+                        game.userMines++;
                     }
+                    cell.flagged = !cell.flagged;
                     updateMinesCounter();
                     e.preventDefault();
                     return;
                 }
 
-                if(e.which == 1 && ocell.text() == "🚩") {
+                if(e.which == 1 && ocell.flagged) {
                     $("#restart").text("😮");
                     return;
                 }
@@ -72,19 +82,19 @@ function createBoard() {
                 reveal(cell);
 
                 if(cell.mine) {
-                    gameState = 1;
+                    game.state = states.lose;
                     stopTimer();
                     gameOver("<h1>💥</h1>You Lose!");
                     ocell.css("background-color", "red");
                     cells.forEach(c => {
                         c.off("mousedown");
                         if(c.mine) {
-                            if(c.text() != "🚩") {
+                            if(!c.flagged) {
                                 c.text("💣");
                                 c.addClass("reveal");
                                 c.css("font-size", "18px");
                             }
-                        } else if(c.text() == "🚩") {
+                        } else if(c.flagged) {
                             c.text("❌");
                         }
                     });
@@ -97,8 +107,8 @@ function createBoard() {
                     }
                     const t = cells.filter(c => c.revealed).length + cells.filter(c => c.mine).length;
                     if(t == cells.length) {
-                        userMines = totalMines;
-                        gameState = 2;
+                        game.userMines = game.totalMines;
+                        game.state = states.win;
                         stopTimer();
                         gameOver("<h1>🏆</h1>You Win!");
                         cells.forEach(c => {
@@ -113,14 +123,14 @@ function createBoard() {
             });
 
             cell.mouseup(() => {
-                switch(gameState) {
-                    case 0:
+                switch(game.state) {
+                    case states.playing:
                         $("#restart").text("🙂");
                         break;
-                    case 1:
+                    case states.lose:
                         $("#restart").text("😟");
                         break;
-                    case 2:
+                    case states.win:
                         $("#restart").text("😎");
                         break;
                 }
@@ -129,6 +139,7 @@ function createBoard() {
             cell.x = x;
             cell.y = y;
             cell.mine = false;
+            cell.flagged = false;
             cells.push(cell);
             row.append(cell);
         }
@@ -160,8 +171,7 @@ function stopTimer() {
 }
 
 function revealEmpty(cell) {
-    //if(cell.text() == "🚩") return;
-    if(cell.text() != "") return;
+    if(cell.flagged) return;
     reveal(cell);
 
     const up = canMove(cell, 0, -1);
@@ -189,8 +199,8 @@ function revealEmpty(cell) {
 }
 
 function canMove(cell, x, y) {
-    if(cell.x + x >= 0 && cell.x + x < w && cell.y + y >= 0 && cell.y + y < h) {
-        queue.push(cells[cell.x + x + (cell.y + y) * w]);
+    if(cell.x + x >= 0 && cell.x + x < game.w && cell.y + y >= 0 && cell.y + y < game.h) {
+        queue.push(cells[cell.x + x + (cell.y + y) * game.w]);
         return true;
     } else {
         return false;
@@ -220,8 +230,8 @@ function countSurroundingMines(cell) {
         for(let x = -1; x <= 1; x++) {
             const i = cell.x + x;
             const j = cell.y + y;
-            if(i >= 0 && i < w && j >= 0 && j < h) {
-                const n = cells[i + j * w];
+            if(i >= 0 && i < game.w && j >= 0 && j < game.h) {
+                const n = cells[i + j * game.w];
                 if(n.mine) mines++;
             }
         }
@@ -257,7 +267,7 @@ function setMines(ex, minesCount) {
 }
 
 function updateMinesCounter() {
-    let t = totalMines - userMines;
+    let t = game.totalMines - game.userMines;
     if(t >= 0) {
         t = Math.min(999, t);
         t = t.toString().padStart(3, "0")
@@ -278,36 +288,36 @@ function setGameLevel(level) {
 
     switch(level.value) {
         case "0":
-            w = 9;
-            h = 9;
-            totalMines = 10;
+            game.w = 9;
+            game.h = 9;
+            game.totalMines = 10;
             break;
         case "1":
-            w = 16;
-            h = 16;
-            totalMines = 40;
+            game.w = 16;
+            game.h = 16;
+            game.totalMines = 40;
             break;
         case "2":
-            w = 30;
-            h = 16;
-            totalMines = 99;
+            game.w = 30;
+            game.h = 16;
+            game.totalMines = 99;
             break;
         case "3":
             $(".user").css("display", "unset");
-            $("#userWidth").val(w);
-            $("#userHeight").val(h);
-            $("#userMines").val(totalMines);
+            $("#userWidth").val(game.w);
+            $("#userHeight").val(game.h);
+            $("#userMines").val(game.totalMines);
             break;
     }
     restart();
 }
 
 function setUserSettings() {
-    w = $("#userWidth").val();
-    h = $("#userHeight").val();
-    totalMines = $("#userMines").val();
+    game.w = $("#userWidth").val();
+    game.h = $("#userHeight").val();
+    game.totalMines = $("#userMines").val();
 
-    if(totalMines >= w * h) {
+    if(game.totalMines >= game.w * game.h) {
         alert("Too many mines!");
         return;
     }
