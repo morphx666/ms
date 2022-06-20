@@ -204,8 +204,10 @@ function revealEmpty(cell) {
 }
 
 function canMove(cell, x, y) {
-    if(cell.x + x >= 0 && cell.x + x < game.w && cell.y + y >= 0 && cell.y + y < game.h) {
-        const c = cells[cell.x + x + (cell.y + y) * game.w];
+    const i = cell.x + x;
+    const j = cell.y + y;
+    if(i >= 0 && i < game.w && j >= 0 && j < game.h) {
+        const c = cells[i + j * game.w];
         if(!queue.includes(c)) queue.push(c);
         return true;
     } else {
@@ -324,7 +326,7 @@ function setUserSettings() {
     game.totalMines = $("#userMines").val();
 
     const maxMines = Math.floor(0.80 * game.w * game.h);
-    if(game.totalMines >= maxMines) {
+    if(game.totalMines > maxMines) {
         gameOver(`<h1>❗</h1>Too many mines!<br>The maximum allowed on a ${game.w}x${game.h} board is ${maxMines}`, 5000);
         return;
     }
