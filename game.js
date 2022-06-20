@@ -261,12 +261,10 @@ function setMines(ex, minesCount) {
     // cells[7 + 6 * game.w].mine = true;
     // cells[2 + 7 * game.w].mine = true;
 
-    while(minesCount > 0) {
-        let cell = cells[Math.floor(Math.random() * cells.length)];
-        if(!cell.mine && ex.x != cell.x && ex.y != cell.y) {
-            cell.mine = true;
-            minesCount--;
-        }
+    const randomCells = window.crypto.getRandomValues(new Uint8Array(minesCount));
+    for(let i = 0; i < randomCells.length; i++) {
+        const cell = cells[Math.floor(Math.random() * cells.length)];
+        cell.mine = true;
     }
 
     for(let i = 0; i < cells.length; i++) {
@@ -325,7 +323,7 @@ function setUserSettings() {
     game.h = $("#userHeight").val();
     game.totalMines = $("#userMines").val();
 
-    if(game.totalMines >= game.w * game.h) {
+    if(game.totalMines >= 0.80 * game.w * game.h) {
         alert("Too many mines!");
         return;
     }
