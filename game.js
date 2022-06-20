@@ -144,6 +144,7 @@ function createBoard() {
             cell.y = y;
             cell.mine = false;
             cell.flagged = false;
+            cell.revealed = false;
             cells.push(cell);
             row.append(cell);
         }
@@ -204,7 +205,8 @@ function revealEmpty(cell) {
 
 function canMove(cell, x, y) {
     if(cell.x + x >= 0 && cell.x + x < game.w && cell.y + y >= 0 && cell.y + y < game.h) {
-        queue.push(cells[cell.x + x + (cell.y + y) * game.w]);
+        const c = cells[cell.x + x + (cell.y + y) * game.w];
+        if(!queue.includes(c)) queue.push(c);
         return true;
     } else {
         return false;
@@ -215,6 +217,7 @@ function clearCellsStates() {
     for(let i = 0; i < cells.length; i++) {
         cells[i].flagged = false;
         cells[i].processed = false;
+        cells[i].revealed = false;
     }
 }
 
@@ -224,6 +227,7 @@ function showMinesCount(cell) {
 }
 
 function reveal(cell) {
+    if(cell.revealed) return;
     cell.addClass("reveal");
     cell.off("mousedown");
     cell.revealed = true;
