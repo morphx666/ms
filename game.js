@@ -152,13 +152,13 @@ function createBoard() {
     }
 }
 
-function gameOver(text) {
+function gameOver(text, timeOut = 3000) {
     $(".game-over").html(text);
     $(".game-over").css({
         "opacity": "1",
         "z-index": "1"
     });
-    window.setTimeout(() => $(".game-over").css("opacity", "0"), 3000);
+    window.setTimeout(() => $(".game-over").css("opacity", "0"), timeOut);
 }
 
 function startTimer() {
@@ -323,8 +323,9 @@ function setUserSettings() {
     game.h = $("#userHeight").val();
     game.totalMines = $("#userMines").val();
 
-    if(game.totalMines >= 0.80 * game.w * game.h) {
-        alert("Too many mines!");
+    const maxMines = Math.floor(0.80 * game.w * game.h);
+    if(game.totalMines >= maxMines) {
+        gameOver(`<h1>❗</h1>Too many mines!<br>The maximum allowed on a ${game.w}x${game.h} board is ${maxMines}`, 5000);
         return;
     }
 
