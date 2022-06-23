@@ -166,7 +166,6 @@ input[type=button] {
     box-shadow: 0 0 8px #999;
 
     color: #000;
-    /* background-color: #eee; */
     background: linear-gradient(to bottom, #eee, #ccc);
     border: 2px solid #999;
     border-radius: 10px;

@@ -37,7 +37,6 @@ function restart() {
     stopTimer();
     seconds = 0;
     createBoard();
-    clearCellsStates();
     updateMinesCounter();
     updateTimer();
     $(".game-over").css({
@@ -51,9 +50,9 @@ function createBoard() {
     board.empty();
 
     for(let y = 0; y < game.h; y++) {
-        let row = $(`<div class='row'></div>`);
+        const row = $(`<div class='row'></div>`);
         for(let x = 0; x < game.w; x++) {
-            let cell = $(`<div class='cell threed3'"></div>`);
+            const cell = $(`<div class='cell threed3'"></div>`);
             
             cell.mousedown(e => {
                 if(e.which == buttons.left && timer == null) {
@@ -212,14 +211,6 @@ function canMove(cell, x, y) {
         return true;
     } else {
         return false;
-    }
-}
-
-function clearCellsStates() {
-    for(let i = 0; i < cells.length; i++) {
-        cells[i].flagged = false;
-        cells[i].processed = false;
-        cells[i].revealed = false;
     }
 }
 
