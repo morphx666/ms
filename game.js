@@ -2,7 +2,7 @@ const classes = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight']
 const cells = [];
 const queue = [];
 let timer = null;
-let seconds = 1;
+let seconds;
 
 const buttons = {
     left: 1,
@@ -35,7 +35,6 @@ function restart() {
     cells.splice(0, cells.length);
     queue.splice(0, queue.length);
     stopTimer();
-    seconds = 0;
     createBoard();
     updateMinesCounter();
     updateTimer();
@@ -85,9 +84,7 @@ function createBoard() {
                 reveal(cell);
 
                 if(cell.mine) {
-                    game.state = states.lost;
-                    stopTimer();
-                    gameOver("<h1>💥</h1>You Lose!");
+                    gameOver("<h1>💥</h1>You Lose!", states.lost);
                     ocell.css("background-color", "red");
                     cells.forEach(c => {
                         c.off("mousedown");
@@ -99,8 +96,10 @@ function createBoard() {
                             }
                         } else if(c.flagged) {
                             c.text("❌");
+                            game.userMines--;
                         }
                     });
+                    updateMinesCounter();
                 } else {
                     $("#restart").text("😮");
                     if(cell.mines > 0) {
@@ -111,9 +110,7 @@ function createBoard() {
                     const t = cells.filter(c => c.revealed).length + cells.filter(c => c.mine).length;
                     if(t == cells.length) {
                         game.userMines = game.totalMines;
-                        game.state = states.won;
-                        stopTimer();
-                        gameOver("<h1>🏆</h1>You Win!");
+                        gameOver("<h1>🏆</h1>You Win!", states.won);
                         cells.forEach(c => {
                             c.off("mousedown");
                             if(c.mine) {
@@ -151,7 +148,10 @@ function createBoard() {
     }
 }
 
-function gameOver(text, timeOut = 3000) {
+function gameOver(text, state, timeOut = 3000) {
+    stopTimer();
+    game.state = state;
+    
     $(".game-over").html(text);
     $(".game-over").css({
         "opacity": "1",
@@ -172,6 +172,7 @@ function stopTimer() {
         updateMinesCounter();
         timer = null;
     }
+    seconds = 0;
 }
 
 function revealEmpty(cell) {
@@ -318,7 +319,7 @@ function setUserSettings() {
 
     const maxMines = Math.floor(0.80 * game.w * game.h);
     if(game.totalMines > maxMines) {
-        gameOver(`<h1>❗</h1>Too many mines!<br>The maximum allowed on a ${game.w}x${game.h} board is ${maxMines}`, 5000);
+        gameOver(`<h1>❗</h1>Too many mines!<br>The maximum allowed on a ${game.w}x${game.h} board is ${maxMines}`, states.playing, 5000);
         return;
     }
 
