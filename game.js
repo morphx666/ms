@@ -242,23 +242,30 @@ function countSurroundingMines(cell) {
     return mines;
 }
 
-function setMines(ex, minesCount) {
+function setMines(ex) {
     // cells[c + r * w].mine;
-    // cells[4 + 2 * game.w].mine = true;
-    // cells[8 + 4 * game.w].mine = true;
-    // cells[5 + 6 * game.w].mine = true;
-    // cells[8 + 2 * game.w].mine = true;
-    // cells[5 + 3 * game.w].mine = true;
-    // cells[7 + 3 * game.w].mine = true;
-    // cells[5 + 5 * game.w].mine = true;
-    // cells[6 + 5 * game.w].mine = true;
-    // cells[7 + 6 * game.w].mine = true;
-    // cells[2 + 7 * game.w].mine = true;
+    // cells[2 + 0 * game.w].mine = true;
+    // cells[3 + 0 * game.w].mine = true;
+    // cells[4 + 0 * game.w].mine = true;
+    // cells[7 + 0 * game.w].mine = true;
+    // cells[0 + 1 * game.w].mine = true;
+    // cells[5 + 1 * game.w].mine = true;
+    // cells[2 + 2 * game.w].mine = true;
+    // cells[6 + 2 * game.w].mine = true;
+    // cells[1 + 4 * game.w].mine = true;
+    // cells[6 + 6 * game.w].mine = true;
 
-    const randomCells = window.crypto.getRandomValues(new Uint8Array(minesCount));
-    for(let i = 0; i < randomCells.length; i++) {
-        const cell = cells[Math.floor(Math.random() * cells.length)];
-        cell.mine = true;
+    const cellsCount = game.w * game.h;
+    let minesCount = game.totalMines;
+    while(minesCount > 0) {
+        const randomCells = window.crypto.getRandomValues(new Uint16Array(minesCount));
+        for(let i = 0; i < randomCells.length; i++) {
+            const cell = cells[randomCells[i] % cellsCount];
+            if(cell != ex && !cell.mine) {
+                cell.mine = true;
+                if(--minesCount == 0) break;
+            }
+        }
     }
 
     for(let i = 0; i < cells.length; i++) {
