@@ -28,6 +28,11 @@ $(document).ready(() => {
     restart();
 });
 
+if("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+}
+  
+
 function restart() {
     game.state = states.playing;
     game.userMines = 0;
@@ -230,9 +235,9 @@ function reveal(cell) {
 function countSurroundingMines(cell) {
     let mines = 0;
     for(let y = -1; y <= 1; y++) {
+        const j = cell.y + y;
         for(let x = -1; x <= 1; x++) {
             const i = cell.x + x;
-            const j = cell.y + y;
             if(i >= 0 && i < game.w && j >= 0 && j < game.h) {
                 const n = cells[i + j * game.w];
                 if(n.mine) mines++;
