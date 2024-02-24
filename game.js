@@ -30,8 +30,7 @@ $(document).ready(() => {
 
 if("serviceWorker" in navigator) {
     navigator.serviceWorker.register("service-worker.js");
-}
-  
+}  
 
 function restart() {
     game.state = states.playing;
