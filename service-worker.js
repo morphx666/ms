@@ -199,9 +199,7 @@ self.addEventListener('activate', function (event) {
                 );
             });
         }).then(function () {
-
             return self.clients.claim();
-
         })
     );
 });
